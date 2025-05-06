@@ -1,0 +1,12 @@
+[package]
+name = "wt"
+version = "0.1.0"
+description = "A very simple bodyweight tracking application"
+authors = ["Jared Stevens"]
+homepage = "https://itsthatdude.com"
+edition = "2024"
+
+
+[dependencies]
+chrono = "0.4.40"
+directories = "6.0.0"
