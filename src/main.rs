@@ -38,7 +38,7 @@ fn main() {
         Some(proj_dir) => {
             filepath.push(proj_dir.data_local_dir());
             if !filepath.is_dir() {
-                match std::fs::create_dir(&filepath) {
+                match std::fs::create_dir_all(&filepath) {
                     Ok(_) => {
                         println!("Created project directory: {}", &filepath.display());
                         filepath.push(FILENAME);
