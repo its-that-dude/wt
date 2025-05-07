@@ -1,8 +1,6 @@
 # 🫃 WT 🫃
 
-A very simple body**W**eigh**T** tracking application
-
-**Currently only tested on Linux**
+A very simple body**W**eigh**T** tracking application.
 
 ![Graph example!](graph-ex.jpg)
 
@@ -26,18 +24,19 @@ Linux
 
 Windows
 
-`{FOLDERID_LocalAppData}\itsthatdude\wt-data`
+`{User}\AppData\Local\itsthatdude\wt-data\data`
 
 MacOS
 
 `$HOME/Library/Application Support/com.itsthatdude.wt-app`
 
-Data saved as a plain text file `wt-data.txt`
+Data saved as an easily editable plain text file `wt-data.txt`
 
-The file can be manually edited as needed. Entries shall be ordered by date.
-Incorrectly formatted entries will be ignored.
+Entries shall be ordered by date. Incorrectly formatted entries will be ignored.
 
 ## 👁️‍🗨️ Contributing
+
+Tested on Ubuntu and Windows 10 machines.
 
 Please report any bugs.
 
@@ -47,4 +46,4 @@ was for simplicity and minimal dependencies.
 
 ## 📃 License
 
-Released under the [MIT License](LICENSE)
+[MIT License](LICENSE)
