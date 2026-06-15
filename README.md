@@ -4,7 +4,7 @@ A very simple body**W**eigh**T** tracking application.
 
 ![Graph example!](graph-ex.jpg)
 
-## ⌨️ Usage
+## Usage
 
 Add new entry `wt add [weight]`
 
@@ -14,9 +14,9 @@ Get app metadata `wt meta`
 
 Get help `wt help`
 
-## 💾 Data
+## Data
 
-Designed to store data in OS standard directories.
+Designed to store data according to the XDG Base Directory Specification.
 
 Linux
 
@@ -34,7 +34,7 @@ Data saved as an easily editable plain text file `wt-data.txt`
 
 Entries shall be ordered by date. Incorrectly formatted entries will be ignored.
 
-## 👁️‍🗨️ Contributing
+## Contributing
 
 Tested on Ubuntu and Windows 10 machines.
 
@@ -44,6 +44,10 @@ I am open to code feedback though I'm not looking to do much additional work on 
 It is my first Rust app and I understand it could probably be structured better. The aim
 was for simplicity and minimal dependencies.
 
-## 📃 License
+## License
 
 [MIT License](LICENSE)
+
+## Disclaimer
+
+This app was a learning project. No AI was used.
