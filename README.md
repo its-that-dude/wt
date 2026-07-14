@@ -16,7 +16,7 @@ Get help `wt help`
 
 ## Data
 
-Designed to store data according to the XDG Base Directory Specification.
+Designed to store data according to the OS standard (ex: XDG).
 
 Linux
 
