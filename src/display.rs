@@ -1,3 +1,4 @@
+use std::io::Write;
 use crate::app::WeightEntry;
 use chrono::{DateTime, Local};
 
@@ -64,10 +65,13 @@ impl Graph {
         }
     }
 
-    pub fn print(&self) {
-        let mut print_buffer: String = String::new();
-        self.lines.iter().for_each(|line| print_buffer += &line);
-        print!("{}", print_buffer);
+    pub fn print(&self) -> std::io::Result<()> {
+        let stdout = std::io::stdout();
+        let mut stdout = stdout.lock();
+        for line in &self.lines {
+            stdout.write_all(line.as_bytes())?;
+        }
+        Ok(())
     }
 }
 

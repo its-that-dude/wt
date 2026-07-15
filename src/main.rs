@@ -80,7 +80,11 @@ fn main() {
         "graph" => {
             let mut app = App::init(filepath);
             match app.load_data() {
-                Ok(_) => app.print_graph(),
+                Ok(_) => { match app.print_graph() {
+                    Ok(_) => (),
+                    Err(e) => {println!("Failed to print graph: {}", e); return }
+                }
+                },
                 Err(e) => println!("Failed to load data: {}", e),
             }
         },

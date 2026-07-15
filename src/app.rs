@@ -1,5 +1,5 @@
 
-use std::io::{Result, Seek, Write};
+use std::io::{Seek, Write};
 use std::fs::OpenOptions;
 use std::path::PathBuf;
 use chrono::{DateTime, Local};
@@ -31,7 +31,7 @@ impl App {
             data: Vec::new(),
         }
     }
-    pub fn append_entry(&self, weight: f32) -> Result<()> {
+    pub fn append_entry(&self, weight: f32) -> std::io::Result<()> {
         let date = Local::now();
         let line = format!("{}, {}", date, weight);
         let mut file = OpenOptions::new()
@@ -43,11 +43,12 @@ impl App {
         Ok(())
     }
     
-    pub fn print_graph(&self) {
+    pub fn print_graph(&self) -> std::io::Result<()> {
         let graph = Graph::new(&self.data);
-        graph.print();
+        graph.print()?;
+        Ok(())
     }
-    pub fn load_data(&mut self) -> Result<()> {
+    pub fn load_data(&mut self) -> std::io::Result<()> {
         let full_text = std::fs::read_to_string(&self.filepath)?;
         for line in full_text.lines() {
             let mut parsed_date: Option<DateTime<Local>> = None;
