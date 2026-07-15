@@ -40,9 +40,7 @@ Tested on Ubuntu and Windows 10 machines.
 
 Please report any bugs.
 
-I am open to code feedback though I'm not looking to do much additional work on this project.
-It is my first Rust app and I understand it could probably be structured better. The aim
-was for simplicity and minimal dependencies.
+I am open to code feedback, particularly improving program speed and writing cleaner Rust code.
 
 ## License
 
