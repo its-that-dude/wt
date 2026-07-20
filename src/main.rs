@@ -82,9 +82,14 @@ fn main() {
         "graph" => {
             let mut app = App::init(filepath);
             match app.load_data() {
-                Ok(_) => { match app.print_graph() {
-                    Ok(_) => (),
-                    Err(e) => println!("Failed to print graph: {}", e)
+                Ok(_) => {
+                    if app.entry_count() == 0 {
+                        println!("No entries to graph.");
+                        exit(1);
+                    }
+                    match app.print_graph() {
+                        Ok(_) => (),
+                        Err(e) => println!("Failed to print graph: {}", e)
                 }
                 },
                 Err(e) => println!("Failed to load data: {}", e),

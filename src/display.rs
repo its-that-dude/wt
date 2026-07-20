@@ -27,11 +27,6 @@ pub struct Graph {
 impl Graph {
     pub fn new(entries: &Vec<WeightEntry>) -> Self {
         match entries.len() {
-            0 => {
-                let mut line_buffer: Vec<String> = Vec::new();
-                line_buffer.push(String::from("No entries to graph."));
-                Self { lines: line_buffer }
-            },
             1 => {
                 let mut line_buffer: Vec<String> = Vec::new();
                 line_buffer.push(row_background());
