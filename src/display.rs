@@ -186,22 +186,11 @@ fn calc_min_max(entries: &[WeightEntry]) -> (usize, usize) {
     (min.floor() as usize, max.ceil() as usize)
 }
 
-// Returns four evenly spaced values in the format "000"
+// Returns min and max range values in the format "000"
 fn calc_header_values(min: usize, max: usize) -> Vec<String> {
-    let change = (max as f32 - min as f32) / 3.0;
-    if change < 1.0 {
-        let min_fmt = format!("{:03}", min);
-        let max_fmt = format!("{:03}", max);
-        vec![min_fmt, "---".to_string(), "---".to_string(), max_fmt]
-    } else {
-        let mid_a = min as f32 + change.round();
-        let mid_b = max as f32 - change.round();
-        let min_fmt = format!("{:03}", min);
-        let mid_a_fmt = format!("{:03}", mid_a);
-        let mid_b_fmt = format!("{:03}", mid_b);
-        let max_fmt = format!("{:03}", max);
-        vec![min_fmt, mid_a_fmt, mid_b_fmt, max_fmt]
-    }
+    let min_fmt = format!("{:03}", min);
+    let max_fmt = format!("{:03}", max);
+    vec![min_fmt, max_fmt]
 }
 
 fn row_background() -> String {
@@ -250,16 +239,11 @@ fn row_since_start(first_entry: &WeightEntry, latest_entry: &WeightEntry) -> Str
 
 fn row_header(plot: &Plot) -> String {
     let chars_needed = GRAPH_WIDTH - ((plot.header_values.len() * 5) + 1 + HEADER_START);
-    let spaces = calc_bg_triple(chars_needed);
-    format!("{} {} {} {} {} {} {} {} ░\n", 
+    format!("{} {} {} {} ░\n",
             "░".repeat(HEADER_START),
-            plot.header_values[0], 
-            "░".repeat(spaces.0), 
-            plot.header_values[1],
-            "░".repeat(spaces.1), 
-            plot.header_values[2],
-            "░".repeat(spaces.2), 
-            plot.header_values[3])
+            plot.header_values[0],
+            "░".repeat(chars_needed),
+            plot.header_values[1])
 }
 
 fn row_plot(date: DateTime<Local>, arrow: char, arrow_pos: usize) -> String {
