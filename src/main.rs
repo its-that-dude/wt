@@ -1,8 +1,10 @@
 mod app;
 mod display;
+mod graph;
 
 use std::env;
 use std::path::PathBuf;
+use std::process::exit;
 use directories::ProjectDirs;
 use crate::app::App;
 
@@ -23,12 +25,12 @@ fn main() {
     
     if args.is_empty() || args.len() > 2 {
         println!("Invalid command. Try 'wt help' for more information.");
-        std::process::exit(1);
+        exit(1);
     }
 
     if args[0] == "help" || args[0] == "--help" {
         println!("{}", HELP);
-        std::process::exit(1);
+        exit(1);
     }
     
     let mut filepath: PathBuf = PathBuf::new();
@@ -52,7 +54,7 @@ fn main() {
         },
         None => {
             println!("Error: Unable to determine data directory on this system.");
-            std::process::exit(1);
+            exit(1);
         }
     }
     
@@ -82,7 +84,7 @@ fn main() {
             match app.load_data() {
                 Ok(_) => { match app.print_graph() {
                     Ok(_) => (),
-                    Err(e) => {println!("Failed to print graph: {}", e); return }
+                    Err(e) => println!("Failed to print graph: {}", e)
                 }
                 },
                 Err(e) => println!("Failed to load data: {}", e),
