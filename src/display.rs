@@ -25,33 +25,36 @@ pub struct Graph {
 }
 
 impl Graph {
-    pub fn new(entries: &Vec<WeightEntry>) -> Self {
+    pub fn new(entries: &[WeightEntry]) -> Self {
         match entries.len() {
             1 => {
-                let mut line_buffer: Vec<String> = Vec::new();
-                line_buffer.push(row_background());
-                line_buffer.push(row_single(&entries[0]));
-                line_buffer.push(row_background());
+                let line_buffer: Vec<String> = vec![
+                    row_background(),
+                    row_single(&entries[0]),
+                    row_background()
+                ];
                 Self { lines: line_buffer }
             }
             2 => {
-                let mut line_buffer: Vec<String> = Vec::new();
-                line_buffer.push(row_background());
-                line_buffer.push(row_previous(&entries[0]));
-                line_buffer.push(row_latest(&entries[0], &entries[1]));
-                line_buffer.push(row_background());
+                let line_buffer: Vec<String> = vec![
+                    row_background(),
+                    row_previous(&entries[0]),
+                    row_latest(&entries[0], &entries[1]),
+                    row_background()
+                ];
                 Self { lines: line_buffer }
             },
             _ => {
                 let (prev, last) = (entries.len() - 2, entries.len() - 1);
-                let mut line_buffer: Vec<String> = Vec::new();
-                line_buffer.push(row_background());
-                line_buffer.push(row_previous(&entries[prev]));
-                line_buffer.push(row_latest(&entries[prev], &entries[last]));
-                line_buffer.push(row_background());
-                let plot = Plot::new(&entries);
+                let mut line_buffer: Vec<String> = vec![
+                    row_background(),
+                    row_previous(&entries[prev]),
+                    row_latest(&entries[prev], &entries[last]),
+                    row_background()
+                ];
+                let plot = Plot::new(entries);
                 line_buffer.push(row_header(&plot));
-                line_buffer.push(plot.build_rows(&entries));
+                line_buffer.push(plot.build_rows(entries));
                 line_buffer.push(row_background());
                 line_buffer.push(row_since_start(&entries[0], &entries[last]));
                 line_buffer.push(row_background());
@@ -78,10 +81,10 @@ struct Plot {
 }
 
 impl Plot {
-    fn new(entries: &Vec<WeightEntry>) -> Self {
-        let start_index = calc_start_index(&entries);
+    fn new(entries: &[WeightEntry]) -> Self {
+        let start_index = calc_start_index(entries);
         let data_entries = &entries[start_index..];
-        let (min_val, max_val) = calc_min_max(&data_entries);
+        let (min_val, max_val) = calc_min_max(data_entries);
         Self {
             start_index,
             min: min_val,
@@ -104,7 +107,7 @@ impl Plot {
                 let arrow_position = raw_position.round() as usize;
                 let row = row_plot(entry.date, '↔', arrow_position);
                 buffer += &row;
-                prev_entry_buffer = &entry;
+                prev_entry_buffer = entry;
                 is_first_entry = false;
             } else {
                 let from_min = entry.weight - self.min as f32;
@@ -114,7 +117,7 @@ impl Plot {
                 let arrow = calc_arrow(prev_entry_buffer, entry);
                 let row = row_plot(entry.date, arrow, arrow_position);
                 buffer += &row;
-                prev_entry_buffer = &entry;
+                prev_entry_buffer = entry;
             }
 
         }
@@ -162,7 +165,7 @@ fn calc_bg_triple(chars_needed: usize) -> (usize, usize, usize) {
 }
 
 // Get start index for iterating through most recent # of entries. Up to GRAPH_QTY.
-fn calc_start_index(entries: &Vec<WeightEntry>) -> usize {
+fn calc_start_index(entries: &[WeightEntry]) -> usize {
     let entry_total = entries.len();
     let mut index: usize = 0;
     if entry_total > GRAPH_QTY {
@@ -200,7 +203,7 @@ fn row_background() -> String {
 fn row_single(entry: &WeightEntry) -> String {
     let text = format!("  {}  |  {}  |  {:05.1}  ",
             String::from("SINGLE ENTRY"),
-            entry.date.format(DYT_FMT).to_string(),
+            entry.date.format(DYT_FMT),
             entry.weight);
     let (lt_ct, rt_ct) = calc_bg_half(GRAPH_WIDTH - text.chars().count());
     format!("{}{}{}\n", "░".repeat(lt_ct), text, "░".repeat(rt_ct))
@@ -209,7 +212,7 @@ fn row_single(entry: &WeightEntry) -> String {
 fn row_previous(entry: &WeightEntry) -> String {
     let text = format!("  {}  |  {}  |  {:05.1}  ", 
                        String::from("PREVIOUS"), 
-                       entry.date.format(DYT_FMT).to_string(), 
+                       entry.date.format(DYT_FMT),
                        entry.weight);
     let (lt_ct, rt_ct) = calc_bg_half(GRAPH_WIDTH - text.chars().count());
     format!("{}{}{}\n", "░".repeat(lt_ct), text, "░".repeat(rt_ct))
@@ -220,18 +223,18 @@ fn row_latest(prev_entry: &WeightEntry, latest_entry: &WeightEntry) -> String {
     let text = format!("  {} {}  |  {}  |  {:05.1}  ",
                        String::from("LATEST"),
                        arrow,
-                       latest_entry.date.format(DYT_FMT).to_string(),
+                       latest_entry.date.format(DYT_FMT),
                        latest_entry.weight);
     let (lt_ct, rt_ct) = calc_bg_half(GRAPH_WIDTH - text.chars().count());
     format!("{}{}{}\n", "░".repeat(lt_ct), text, "░".repeat(rt_ct))
 }
 
 fn row_since_start(first_entry: &WeightEntry, latest_entry: &WeightEntry) -> String {
-    let arrow = calc_arrow(first_entry, latest_entry).to_string();
+    let arrow = calc_arrow(first_entry, latest_entry);
     let text = format!("  {} {}  |  {}  |  {:05.1}  ",
                        arrow,
                        String::from("SINCE START"),
-                       first_entry.date.format(DYT_FMT).to_string(),
+                       first_entry.date.format(DYT_FMT),
                        first_entry.weight);
     let (lt_ct, rt_ct) = calc_bg_half(GRAPH_WIDTH - text.chars().count());
     format!("{}{}{}\n", "░".repeat(lt_ct), text, "░".repeat(rt_ct))
